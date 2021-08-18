@@ -3,6 +3,7 @@ from tkinter import font as tkFont
 from tkinter import ttk, Label
 from PIL import Image, ImageTk
 import pyscreenshot as ImageGrab
+import pyautogui # Importante no borrar esta linea, hace que se vean bien los recortes
 
 # Guarda el rectangualo creado adentro del canvas
 images = []
@@ -69,15 +70,24 @@ class Customisation:
         self.C.coords(self.rect, self.start_x, self.start_y, self.curX, self.curY)
 
     def on_button_release(self, event):
-        a = 10
-        b = 10
+        # Convertir todas las coordenadas a int
+        first_x = int(self.start_x)
+        first_y = int(self.start_y)
+        final_x = int(self.curX)
+        final_y = int(self.curY)
 
-        # part of the screen
-        im=ImageGrab.grab(bbox=(b, a, 500, 500))
+        # Validacion de en que posicion del mouse ordenar
+        if first_x < final_x and first_y < final_y: # De arriba a la izquierda para abajo a la derecha
+            im = ImageGrab.grab(bbox=(first_x, first_y, final_x, final_y))
+        #elif: # De abajo a la izquierda a arriba a la derecha
+        #elif: # De abajo a la izquierda a arriba a la derecha
+
+        else: # De abajo a la derecha a arriba a la izquierda
+            im = ImageGrab.grab(bbox=(final_x, final_y, first_x, first_y))
         im.show()
 
-        # to file
-        im.save('im.png')
+        # Guardar la imagen
+        im.save('crop.png')
 
     # Crea un rectangulo transparente y lo aplica en el canvas como imagen
     def create_rectangle(self, c, x1, y1, x2, y2, **kwargs):

@@ -3,6 +3,7 @@ from tkinter import font as tkFont
 from tkinter import ttk, Label
 from PIL import Image, ImageTk
 import pyscreenshot as ImageGrab
+import sys
 import pyautogui # Importante no borrar esta linea, hace que se vean bien los recortes
 
 # Guarda el rectangualo creado adentro del canvas
@@ -76,24 +77,31 @@ class Customisation:
         final_x = int(self.curX)
         final_y = int(self.curY)
 
-        # Validacion para ordenar las coordenadas
+        try:
+            # Validacion para ordenar las coordenadas
 
-        # ↘↘↘↘↘ De arriba a la izquierda para abajo a la derecha
-        if first_x < final_x and first_y < final_y:
-            im = ImageGrab.grab(bbox=(first_x, first_y, final_x, final_y))
-        # ↙↙↙↙↙ De arriba a la derecha a abajo a la izquierda
-        elif first_x > final_x and first_y < final_y:
-            im = ImageGrab.grab(bbox=(final_x, first_y, first_x, final_y))
-        # ↗↗↗↗↗ De abajo a la izquierda a arriba a la derecha
-        elif first_x < final_x and first_y > final_y: 
-            im = ImageGrab.grab(bbox=(first_x, final_y, final_x, first_y))
-        # ↖↖↖↖↖ De abajo a la derecha a arriba a la izquierda
-        else:
-            im = ImageGrab.grab(bbox=(final_x, final_y, first_x, first_y))
-        im.show()
+            # ↘↘↘↘↘ De arriba a la izquierda para abajo a la derecha
+            if first_x < final_x and first_y < final_y:
+                im = ImageGrab.grab(bbox=(first_x, first_y, final_x, final_y))
+            # ↙↙↙↙↙ De arriba a la derecha a abajo a la izquierda
+            elif first_x > final_x and first_y < final_y:
+                im = ImageGrab.grab(bbox=(final_x, first_y, first_x, final_y))
+            # ↗↗↗↗↗ De abajo a la izquierda a arriba a la derecha
+            elif first_x < final_x and first_y > final_y: 
+                im = ImageGrab.grab(bbox=(first_x, final_y, final_x, first_y))
+            # ↖↖↖↖↖ De abajo a la derecha a arriba a la izquierda
+            else:
+                im = ImageGrab.grab(bbox=(final_x, final_y, first_x, first_y))
+            im.show()
 
-        # Guardar la imagen
-        im.save('crop.png')
+            # Guardar la imagen
+            im.save('crop.png')
+
+            # Cierra el programa despues de hacer un recorte
+            sys.exit()
+        except:
+            # Cierra el programa despues de hacer un recorte
+            sys.exit()
 
     # Crea un rectangulo transparente y lo aplica en el canvas como imagen
     def create_rectangle(self, c, x1, y1, x2, y2, **kwargs):

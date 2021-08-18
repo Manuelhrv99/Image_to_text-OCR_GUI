@@ -76,13 +76,19 @@ class Customisation:
         final_x = int(self.curX)
         final_y = int(self.curY)
 
-        # Validacion de en que posicion del mouse ordenar
-        if first_x < final_x and first_y < final_y: # De arriba a la izquierda para abajo a la derecha
-            im = ImageGrab.grab(bbox=(first_x, first_y, final_x, final_y))
-        #elif: # De abajo a la izquierda a arriba a la derecha
-        #elif: # De abajo a la izquierda a arriba a la derecha
+        # Validacion para ordenar las coordenadas
 
-        else: # De abajo a la derecha a arriba a la izquierda
+        # ↘↘↘↘↘ De arriba a la izquierda para abajo a la derecha
+        if first_x < final_x and first_y < final_y:
+            im = ImageGrab.grab(bbox=(first_x, first_y, final_x, final_y))
+        # ↙↙↙↙↙ De arriba a la derecha a abajo a la izquierda
+        elif first_x > final_x and first_y < final_y:
+            im = ImageGrab.grab(bbox=(final_x, first_y, first_x, final_y))
+        # ↗↗↗↗↗ De abajo a la izquierda a arriba a la derecha
+        elif first_x < final_x and first_y > final_y: 
+            im = ImageGrab.grab(bbox=(first_x, final_y, final_x, first_y))
+        # ↖↖↖↖↖ De abajo a la derecha a arriba a la izquierda
+        else:
             im = ImageGrab.grab(bbox=(final_x, final_y, first_x, first_y))
         im.show()
 

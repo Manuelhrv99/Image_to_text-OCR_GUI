@@ -13,7 +13,7 @@ class Customisation:
         self.window = tk.Tk()
         self.window.title('Menu')
         self.window.attributes('-fullscreen', True)
-        self.window.attributes("-alpha", 0.05)
+        self.window.attributes("-alpha", 0.2) # Cambia la opasidad de la ventana en general, cambia el brillo del recorte final
         self.window.resizable(0,0)
         self.window.config(cursor="crosshair white")
 
@@ -26,7 +26,7 @@ class Customisation:
         self.C.pack()
 
         # Dar la transparencia al canvas creando un rectangulo
-        self.window.bind(self.create_rectangle(self.C, 0, 0, screen_width, screen_height, fill='black', alpha=0))
+        self.window.bind(self.create_rectangle(self.C, 0, 0, screen_width, screen_height, fill='black', alpha=0)) # El alpha cambia la opasidad del rectangulo
 
         # Propiedades del mouse
         exit_button = tk.Button(

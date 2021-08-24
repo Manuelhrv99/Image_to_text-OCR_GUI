@@ -4,6 +4,10 @@ from PIL import Image, ImageTk
 import pyscreenshot as ImageGrab
 import sys
 import pyautogui # Importante no borrar esta linea, hace que se vean bien los recortes
+import cv2
+import pytesseract as tesseract
+
+tesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Guarda el rectangualo creado adentro del canvas
 images = []
@@ -96,6 +100,19 @@ class Customisation:
 
             # Guardar la imagen
             im.save('crop.png')
+
+            imageToText = tesseract.image_to_string(im)            
+
+            """myImage = cv2.imread(im)
+            imageToText = tesseract.image_to_string(myImage)
+
+            cv2.imshow('Image', myImage)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()"""
+
+            txtFile = open('ML_Text.txt', 'w')
+            txtFile.write(imageToText + '\n')
+            txtFile.close()
 
             # Cierra el programa despues de hacer un recorte
             sys.exit()

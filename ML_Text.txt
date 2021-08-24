@@ -1,0 +1,31 @@
+try:
+
+# Validacion para ordenar las coordenadas
+
+# \\\ss De arriba a la izquierda para abajo a la derecha
+if first_x < final_x and first_y < final_y:
+
+im = ImageGrab.grab(bbox=(first_x, first_y, final_x,
+# -vvee De arriba a la derecha a abajo a la izquierda
+elif first_x > final_x and first_y < final_y:
+
+im = ImageGrab.grab(bbox=(final_x, first_y, first_x,
+# 77777 De abajo a la izquierda a arriba a la derecha
+elif first_x < final_x and first_y > final_y:
+
+im = ImageGrab.grab(bbox=(first_x, final_y, final_x,
+# <sss De abajo a la derecha a arriba a la izquierda
+else:
+
+im = ImageGrab.grab(bbox=(final_x, final_y, first_x,
+
+im. show()
+
+final_y))
+
+final_y))
+
+first_y))
+
+first_y))
+

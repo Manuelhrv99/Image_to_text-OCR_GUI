@@ -101,7 +101,7 @@ class Customisation:
             # Guardar la imagen
             im.save('crop.png')
 
-            imageToText = tesseract.image_to_string(im)            
+            imageToText = tesseract.image_to_string(im, config="--oem 3 --psm 1")            
 
             """myImage = cv2.imread(im)
             imageToText = tesseract.image_to_string(myImage)

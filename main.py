@@ -91,6 +91,7 @@ class Customisation:
             # ↖↖↖↖↖ De abajo a la derecha a arriba a la izquierda
             else:
                 im = ImageGrab.grab(bbox=(final_x, final_y, first_x, first_y))
+                
             im.show()
 
             # Guardar la imagen

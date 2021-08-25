@@ -1,13 +1,20 @@
 import tkinter as tk
 from tkinter import font as tkFont
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageEnhance
 import pyscreenshot as ImageGrab
 import sys
 import pyautogui # Importante no borrar esta linea, hace que se vean bien los recortes
+
+import os
 import cv2
 import pytesseract as tesseract
 
 tesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+# Cosas por hacer por
+# Usar inteligencia artificial para reescalar la imagen
+# Crear un comando de teclado para abrir el programa
+# Investigar como abrir el programa en todos los monitores
 
 # Guarda el rectangualo creado adentro del canvas
 images = []
@@ -96,23 +103,24 @@ class Customisation:
             else:
                 im = ImageGrab.grab(bbox=(final_x, final_y, first_x, first_y))
                 
-            im.show()
+            # Abre la imagen
+            #im.show()
 
             # Guardar la imagen
             im.save('crop.png')
 
-            imageToText = tesseract.image_to_string(im, config="--oem 3 --psm 1")            
+            big_im = self.modify_image(im)
+            big_im.show()
 
-            """myImage = cv2.imread(im)
-            imageToText = tesseract.image_to_string(myImage)
-
-            cv2.imshow('Image', myImage)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()"""
+                                                                    #psm 4 o 1 para pruebas
+            imageToText = tesseract.image_to_string(big_im, config="--oem 1 --psm 4")            
 
             txtFile = open('ML_Text.txt', 'w')
             txtFile.write(imageToText + '\n')
             txtFile.close()
+
+            # Abre el bloc de notas
+            os.startfile('ML_Text.txt')
 
             # Cierra el programa despues de hacer un recorte
             sys.exit()
@@ -128,6 +136,41 @@ class Customisation:
         image = Image.new('RGBA', (x2-x1, y2-y1), fill)
         images.append(ImageTk.PhotoImage(image))
         c.create_image(x1, y1, image=images[-1], anchor='nw')
+
+    # Cambiar el tamaño y contraste de la imagen
+    def modify_image(self, im):
+        # Cambiar el tamaño de la imagen a 2x
+        w, h = im.size
+        w = int(w * 2)
+        h = int(h * 2)
+        big_im = im.resize((w, h))
+        #im_copy.show()
+        big_im.save('big_crop.png')
+
+        # Contraste
+        contrast = ImageEnhance.Contrast(big_im)
+        contrast_image = contrast.enhance(4).copy()
+        contrast_image.save('contrast_image.png')
+
+        # Blanco y negro
+        greyscale = contrast_image.convert('L')
+        greyscale_image = greyscale.copy()
+        greyscale_image.save('greyscale_image.png')
+
+        # Color
+        # color = ImageEnhance.Color(im_copy)
+        # color.enhance(1.5).save('color.png')
+
+        # Brillo
+        # brightness = ImageEnhance.Brightness(im_copy)
+        # brightness.enhance(1.5).save('brightness.jpg')
+
+        # Nitidez
+        sharpness = ImageEnhance.Sharpness(greyscale_image)
+        final_image = sharpness.enhance(2).copy()
+        final_image.save('sharpness_image.jpg')
+
+        return final_image
 
 
 if __name__ == '__main__':

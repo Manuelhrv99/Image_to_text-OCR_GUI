@@ -6,20 +6,14 @@ import sys
 import pyautogui # Importante no borrar esta linea, hace que se vean bien los recortes
 
 import os
-import cv2
 import pytesseract as tesseract
 
 tesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-# Cosas por hacer por
-# Usar inteligencia artificial para reescalar la imagen
-# Crear un comando de teclado para abrir el programa
-# Investigar como abrir el programa en todos los monitores
-
 # Guarda el rectangualo creado adentro del canvas
 images = []
 
-class Customisation:
+class main:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title('Menu')
@@ -104,28 +98,19 @@ class Customisation:
                 im = ImageGrab.grab(bbox=(final_x, final_y, first_x, first_y))
                 
             # Abre la imagen
-            #im.show()
+            # im.show()
 
             # Guardar la imagen
-            im.save('crop.png')
+            # im.save('crop.png')
 
-            big_im = self.modify_image(im)
-            big_im.show()
+            self.resized_im = self.modify_image(im)
 
-                                                                    #psm 4 o 1 para pruebas
-            imageToText = tesseract.image_to_string(big_im, config="--oem 1 --psm 4")            
-
-            txtFile = open('ML_Text.txt', 'w')
-            txtFile.write(imageToText + '\n')
-            txtFile.close()
-
-            # Abre el bloc de notas
-            os.startfile('ML_Text.txt')
+            self.img_to_text()                                                
 
             # Cierra el programa despues de hacer un recorte
             sys.exit()
         except:
-            # Cierra el programa despues de hacer un recorte
+            # Cierra el programa si hay un fallo
             sys.exit()
 
     # Crea un rectangulo transparente y lo aplica en el canvas como imagen
@@ -143,19 +128,18 @@ class Customisation:
         w, h = im.size
         w = int(w * 2)
         h = int(h * 2)
-        big_im = im.resize((w, h))
-        #im_copy.show()
-        big_im.save('big_crop.png')
+        resized_im = im.resize((w, h))
+        # resized_im.save('big_crop.png')
 
         # Contraste
-        contrast = ImageEnhance.Contrast(big_im)
+        contrast = ImageEnhance.Contrast(resized_im)
         contrast_image = contrast.enhance(4).copy()
-        contrast_image.save('contrast_image.png')
+        # contrast_image.save('contrast_image.png')
 
         # Blanco y negro
         greyscale = contrast_image.convert('L')
         greyscale_image = greyscale.copy()
-        greyscale_image.save('greyscale_image.png')
+        # greyscale_image.save('greyscale_image.png')
 
         # Color
         # color = ImageEnhance.Color(im_copy)
@@ -168,10 +152,20 @@ class Customisation:
         # Nitidez
         sharpness = ImageEnhance.Sharpness(greyscale_image)
         final_image = sharpness.enhance(2).copy()
-        final_image.save('sharpness_image.jpg')
+        # final_image.save('sharpness_image.jpg')
 
         return final_image
 
+    def img_to_text(self):
+                                                                    #psm 4 o 1 para pruebas
+        imageToText = tesseract.image_to_string(self.resized_im, config="--oem 1 --psm 4")            
+
+        txtFile = open('ML_Text.txt', 'w')
+        txtFile.write(imageToText + '\n')
+        txtFile.close()
+
+        # Abre el bloc de notas
+        os.startfile('ML_Text.txt')
 
 if __name__ == '__main__':
-    app = Customisation()
+    app = main()

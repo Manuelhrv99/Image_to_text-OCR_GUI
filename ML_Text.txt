@@ -1,6 +1,4 @@
-override fun onCreate(savedInstanceState: Bundle?) {
-super. onCreate(savedInstanceState)
-setContentView(R. Layout.activity_main)
+self.resized_im = self.modify_image(im)
 
-initViews()
+self.img_to_text()
 

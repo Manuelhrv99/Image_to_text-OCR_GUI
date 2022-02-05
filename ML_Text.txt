@@ -1,4 +1,11 @@
-self.resized_im = self.modify_image(im)
+def img to text(self):
+imageToText = tesseract.image to string(self.resized im, config="--oem 1 --psm 4")
 
-self.img_to_text()
-
+txtFile = open('ML_Text.txt', ‘w+')
+txtFile.write(imageToText + ‘\n')
+txtFile.close()
+
+Fs ay \ 9) af <= 0 a oR ou o (= g (0) r= E
+os.startfile('ML_Text.txt")
+
+

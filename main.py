@@ -18,7 +18,6 @@ class main:
         self.window = tk.Tk()
         self.window.title('Menu')
         self.window.attributes('-fullscreen', True)
-        self.window.attributes("-alpha", 0.2) # Cambia la opasidad de la ventana en general, cambia el brillo del recorte final
         self.window.resizable(0,0)
         self.window.config(cursor="crosshair white")
 
@@ -30,8 +29,14 @@ class main:
 
         self.C.pack()
 
+        screenshot = pyautogui.screenshot()
+        screenshot.save("screenshot.png")
+        
+        bg = tk.PhotoImage(file = "screenshot.png")
+        self.C.create_image( 0, 0, image = bg, anchor = "nw")
+
         # Dar la transparencia al canvas creando un rectangulo
-        self.window.bind(self.create_rectangle(self.C, 0, 0, screen_width, screen_height, fill='black', alpha=0)) # El alpha cambia la opasidad del rectangulo
+        self.window.bind(self.create_rectangle(self.C, 0, 0, screen_width, screen_height, fill='white', alpha=0.05)) # El alpha cambia la opasidad de la ventana
 
         # Propiedades del mouse
         exit_button = tk.Button(
@@ -57,15 +62,13 @@ class main:
         # Muestra la ventana
         self.window.mainloop()
 
-        # Agregar un icono personalizado  
-        #self.window.iconbitmap('./assets/pythontutorial.ico')
-
     def on_button_press(self,event):
         # Posicion inicial del mouse
         self.start_x = self.C.canvasx(event.x)
         self.start_y = self.C.canvasy(event.y)
 
-        self.rect = self.C.create_rectangle(0, 0, 1, 1, outline='blue', fill='black')
+        # Crea el cuadro al arrastrar el mouse
+        self.rect = self.C.create_rectangle(0, 0, 0, 0, outline='blue', width=2)
 
     def on_move_press(self,event):
         self.curX = self.C.canvasx(event.x)
@@ -96,16 +99,10 @@ class main:
             # ↖↖↖↖↖ De abajo a la derecha a arriba a la izquierda
             else:
                 im = ImageGrab.grab(bbox=(final_x, final_y, first_x, first_y))
-                
-            # Abre la imagen
-            # im.show()
-
-            # Guardar la imagen
-            # im.save('crop.png')
 
             self.resized_im = self.modify_image(im)
 
-            self.img_to_text()                                                
+            self.img_to_text()                                              
 
             # Cierra el programa despues de hacer un recorte
             sys.exit()
@@ -126,46 +123,22 @@ class main:
     def modify_image(self, im):
         # Cambiar el tamaño de la imagen a 2x
         w, h = im.size
-        w = int(w * 2)
-        h = int(h * 2)
+        w = int(w * 2.5)
+        h = int(h * 2.5)
         resized_im = im.resize((w, h))
-        # resized_im.save('big_crop.png')
 
-        # Contraste
-        contrast = ImageEnhance.Contrast(resized_im)
-        contrast_image = contrast.enhance(4).copy()
-        # contrast_image.save('contrast_image.png')
-
-        # Blanco y negro
-        greyscale = contrast_image.convert('L')
-        greyscale_image = greyscale.copy()
-        # greyscale_image.save('greyscale_image.png')
-
-        # Color
-        # color = ImageEnhance.Color(im_copy)
-        # color.enhance(1.5).save('color.png')
-
-        # Brillo
-        # brightness = ImageEnhance.Brightness(im_copy)
-        # brightness.enhance(1.5).save('brightness.jpg')
-
-        # Nitidez
-        sharpness = ImageEnhance.Sharpness(greyscale_image)
-        final_image = sharpness.enhance(2).copy()
-        # final_image.save('sharpness_image.jpg')
-
-        return final_image
+        return resized_im
 
     def img_to_text(self):
-                                                                    #psm 4 o 1 para pruebas
-        imageToText = tesseract.image_to_string(self.resized_im, config="--oem 1 --psm 4")            
+        imageToText = tesseract.image_to_string(self.resized_im, config="--oem 1 --psm 4")    
 
-        txtFile = open('ML_Text.txt', 'w')
+        txtFile = open('ML_Text.txt', 'w+')
         txtFile.write(imageToText + '\n')
         txtFile.close()
 
         # Abre el bloc de notas
         os.startfile('ML_Text.txt')
+        
 
 if __name__ == '__main__':
     app = main()

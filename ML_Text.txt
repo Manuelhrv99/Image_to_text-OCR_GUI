@@ -1,11 +1,6 @@
-def img to text(self):
-imageToText = tesseract.image to string(self.resized im, config="--oem 1 --psm 4")
+Videos
 
-txtFile = open('ML_Text.txt', ‘w+')
-txtFile.write(imageToText + ‘\n')
-txtFile.close()
+DB) ixeo (oler-| (Gs)
 
-Fs ay \ 9) af <= 0 a oR ou o (= g (0) r= E
-os.startfile('ML_Text.txt")
-
+D)ixee [ole] m9)
 

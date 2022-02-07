@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import font as tkFont
-from PIL import Image, ImageTk, ImageEnhance
+from PIL import Image, ImageTk
 import pyscreenshot as ImageGrab
 import sys
 import pyautogui # Importante no borrar esta linea, hace que se vean bien los recortes
@@ -102,10 +102,10 @@ class main:
 
             self.resized_im = self.modify_image(im)
 
-            self.img_to_text()                                              
+            self.img_to_text()       
 
             # Cierra el programa despues de hacer un recorte
-            sys.exit()
+            sys.exit()                                      
         except:
             # Cierra el programa si hay un fallo
             sys.exit()
@@ -119,9 +119,8 @@ class main:
         images.append(ImageTk.PhotoImage(image))
         c.create_image(x1, y1, image=images[-1], anchor='nw')
 
-    # Cambiar el tamaño y contraste de la imagen
+    # Cambiar el tamaño de la imagen
     def modify_image(self, im):
-        # Cambiar el tamaño de la imagen a 2x
         w, h = im.size
         w = int(w * 2.5)
         h = int(h * 2.5)

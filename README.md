@@ -14,4 +14,4 @@ Licensed under the Apache License 2.0
 
 Be shure to install all the dependencies and thats all!
 
-# More info about tesseract: https://github.com/UB-Mannheim/tesseract
+## More info about tesseract: https://github.com/UB-Mannheim/tesseract

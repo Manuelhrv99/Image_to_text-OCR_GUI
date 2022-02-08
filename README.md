@@ -1,4 +1,4 @@
-# Image_to_text-OCR_GUI
+# Image to text OCR GUI
 
 ## Powered by Tesseract
 

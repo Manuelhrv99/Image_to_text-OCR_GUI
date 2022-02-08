@@ -6,7 +6,7 @@ Licensed under the Apache License 2.0
 
 > First of all, you need to download tesseract, check the link below.
 
-`https://github.com/UB-Mannheim/tesseract/wiki`
+https://github.com/UB-Mannheim/tesseract/wiki
 
 > Paste the ubication of the program in the line:
 
